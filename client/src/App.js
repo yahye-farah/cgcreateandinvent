@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Nav from './components/Nav';
 import './App.css';
+import {BrowserRouter,Route} from 'react-router-dom'
+import Singin from './components/Signin';
+import Singup from './components/Signup';
+import Dashboard from './components/dashboard'
+
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        
+        <BrowserRouter>
+        <Nav />
+        <Route path='/' exact component={Singin} />
+        <Route path='/signup' exact component={Singup} />
+        <Route path='/dashboard' exact component={Dashboard} />
+        </BrowserRouter>
       </div>
     );
   }
