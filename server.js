@@ -5,5 +5,5 @@ const port = 4000;
 
 
 app.listen(port, () => {
-    console.log("Server is successfuly running on port "+ port)
+    console.log(`Server is successfuly running on port ${port}`)
 })

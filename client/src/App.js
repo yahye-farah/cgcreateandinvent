@@ -5,6 +5,7 @@ import {BrowserRouter,Route} from 'react-router-dom'
 import Singin from './components/Signin';
 import Singup from './components/Signup';
 import Dashboard from './components/dashboard'
+import CreateTodo from './components/createTodo'
 
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
         <Route path='/' exact component={Singin} />
         <Route path='/signup' exact component={Singup} />
         <Route path='/dashboard' exact component={Dashboard} />
+        <Route path='/create' exact component={CreateTodo} />
         </BrowserRouter>
       </div>
     );
