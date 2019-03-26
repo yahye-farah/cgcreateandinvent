@@ -46,18 +46,14 @@ class Dashboard extends Component {
                 textColor="primary"
                 centered
             >
-                <Tab label="All" />
-                <Tab label="Create Todo" />
                 <Tab label="Active" />
                 <Tab label="Completed" />
+                <Tab label="Create Todo" />
             </Tabs>
         </Paper>)
-        if(this.state.value === 1) {
+        if(this.state.value === 2) {
             return (
-                <div>
-                    {Menu}
-                    <CreateTodo />
-                </div>
+                    <Redirect to="/create" />
             )
         }
         return (
