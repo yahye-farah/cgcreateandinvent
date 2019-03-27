@@ -7,7 +7,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Background from '../image/event-management.jpg'
+import Background from '../image/event-management.jpg';
+import {Redirect} from 'react-router-dom';
+import axios from 'axios'
 
 const styles = theme => ({
   main: {
@@ -51,10 +53,34 @@ const styles = theme => ({
 
 
 class Singin extends Component {
+
+  state = {
+    title: '',
+    description: ''
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    let todo = {
+      title: this.state.title,
+      description: this.state.description,
+      userId: window.localStorage.getItem('userName')
+    }
+    axios.post('http://localhost:4000/todo/create', todo)
+    .then(result => {
+      console.log('saved')
+    })
+
+  }
  
   render(){
     const { classes } = this.props;
-    return (
+    const CreateForm = (
       <div className={classes.avatar}>
         <main className={classes.main}>
           <CssBaseline />
@@ -65,11 +91,11 @@ class Singin extends Component {
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel >Title</InputLabel>
-                <Input id="email" name="email"  autoFocus onChange={this.handleChange} />
+                <Input  name="title"  autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel color="primary">Description</InputLabel>
-                <Input name="password" type="text"  className={classes.inputfield} autoComplete="current-password" onChange={this.handleChange}/>
+                <Input name="description" type="text"  className={classes.inputfield}  onChange={this.handleChange}/>
               </FormControl>
               <Button
                 fullWidth
@@ -86,6 +112,16 @@ class Singin extends Component {
           </Paper>
         </main>
       </div>
+    )
+    if(window.localStorage.getItem('token') !== '') {
+      return (
+        <div>
+          {CreateForm}
+        </div>
+      )
+    }
+    return (
+      <Redirect to="/" />
     )
     };
 }

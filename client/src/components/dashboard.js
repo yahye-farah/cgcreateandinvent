@@ -18,7 +18,12 @@ class Dashboard extends Component {
     state = {
         value: 0,
         isOpen: false,
+        todos: []
     };
+
+    componentDidMount() {
+        
+    }
 
     handleClose = () => {
         this.setState({
@@ -56,11 +61,16 @@ class Dashboard extends Component {
                     <Redirect to="/create" />
             )
         }
+        if(window.localStorage.getItem('token') !== '') {
         return (
             <div>
                 {Menu}
                 <Todo />
             </div>
+        )
+        }
+        return (
+            <Redirect to="/" />
         )
 
     }

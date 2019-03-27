@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
+import {Redirect} from 'react-router-dom'
 
 
 const styles = theme => ({
@@ -53,6 +54,7 @@ class Singin extends Component {
       lastName: '',
       userName: '',
       password: '',
+      isLoggin: false
     }
   }
  
@@ -70,59 +72,82 @@ class Singin extends Component {
     }else {
       axios.post('http://localhost:4000/auth/signup ',this.state)
       .then(result => {
-        console.log('result', result)
+        let token = result.data.token
+        window.localStorage.setItem('token', token);
+        window.localStorage.setItem('userName',result.data.userName)
+        this.setState({
+          isLoggin:true
+        })
       })
     }
     
   }
 
   render(){
+    let token = window.localStorage.getItem('token')
     const { classes } = this.props;
-    return (
+    const SignupForm = (
       <div>
-        <main className={classes.main}>
-          <CssBaseline />
-          <Paper className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
-            </Typography>
-            <form className={classes.form}>
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form}>
+          <FormControl margin="normal" required fullWidth>
+              <InputLabel >Firstname</InputLabel>
+              <Input  name="firstName"  autoFocus onChange={this.handleChange} />
+            </FormControl>
             <FormControl margin="normal" required fullWidth>
-                <InputLabel >Firstname</InputLabel>
-                <Input  name="firstName"  autoFocus onChange={this.handleChange} />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel >Lastname</InputLabel>
-                <Input  name="lastName" autoFocus onChange={this.handleChange} />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel >Username</InputLabel>
-                <Input name="userName" autoFocus onChange={this.handleChange} />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleChange}/>
-              </FormControl>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={this.handleSubmit}
-              >
-                Sign up
-              </Button>
-              
-            </form>
+              <InputLabel >Lastname</InputLabel>
+              <Input  name="lastName" autoFocus onChange={this.handleChange} />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel >Username</InputLabel>
+              <Input name="userName" autoFocus onChange={this.handleChange} />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleChange}/>
+            </FormControl>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.handleSubmit}
+            >
+              Sign up
+            </Button>
             
-          </Paper>
-        </main>
-      </div>
+          </form>
+          
+        </Paper>
+      </main>
+    </div>
     )
-    };
+   if(token !=='') {
+    return (
+      <Redirect to="/dashboard" />
+    )
+   }
+
+   if(this.state.isLoggin === true) {
+    return (
+      <Redirect to="/dashboard" />
+    )
+   }
+   return (
+     <div>
+    {SignupForm}
+    </div>
+   )
+   
+  };
 }
 
 

@@ -3,7 +3,8 @@ const router = express.Router();
 const Todos = require('../model/Todo');
 
 //create Todo
-router.post('/createTodo', (req, res) => {
+router.post('/create', (req, res) => {
+    console.log(';;;',req.body)
     const todo = new Todos({
         title: req.body.title,
         description: req.body.description,

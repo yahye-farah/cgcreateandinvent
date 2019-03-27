@@ -7,9 +7,9 @@ const bcrypt = require('bcrypt');
 
 //signup fro new users
 router.post('/signup', (req, res) => {
-    User.find({userName: req.body.userName}).then(user => {
-        if(user.length !== 0){
-           return res.send("This userName is taken please choose another one");
+    User.find({ userName: req.body.userName }).then(user => {
+        if (user.length !== 0) {
+            return res.send("This userName is taken please choose another one");
         }
         console.log('check')
         bcrypt.hash(req.body.password, 10).then(hash => {
@@ -20,34 +20,43 @@ router.post('/signup', (req, res) => {
                 password: hash
             })
             user.save().then(user => {
-                let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
-                res.send(token);
+                let token = jwt.sign({ userName: user.userName }, keys.secret, { expiresIn: '1h' })
+                res.send({
+                    token: token,
+                    userName: req.body.userName
+                });
             })
-            .catch(err => {
-                console.log(err);
-            })
+                .catch(err => {
+                    console.log(err);
+                })
         })
-    })   
+    })
 })
 
 
 // signin users 
 router.post('/signin', (req, res) => {
-    User.find({userName: req.body.userName})
-    .then(user => {
-        if(!user) {
-            res.send("Your username is wrong please try again")
-        }
-        //check the password
-        return bcrypt.compare(req.body.password, user.password)
+    console.log(req.body.password)
+    console.log(req.body.userName)
+    User.findOne({ userName: req.body.userName }).then(user => {
+            console.log('user',user)
+            if (!user) {
+                return res.send("Incorrect Username")
+            }
+            // //check the password
+            // console.log('jjj')
+            var bol = bcrypt.compare(req.body.password, user.password)
+            console.log('boolean',bol);
+            return bol
     })
     .then(result => {
-        if(!result) {
-            res.send("Your Password is Wrong")
+        console.log('result',result)
+        if (!result) {
+           return  res.send("Incorrect Password")
         }
 
-        let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
-        res.send(token);
+        let token = jwt.sign({ userName: req.body.userName }, keys.secret, { expiresIn: '1h' })
+        res.send({token: token, userName: req.body.userName});
     })
 })
 

@@ -22,17 +22,26 @@ const styles = {
 
 class Nav extends Component{
     state = {
-        signin: false,
-        signup: false
+        isLoggin: false,
+        
+    }
+    componentDidMount() {
+      if(window.localStorage.getItem('token') !== '') {
+        this.setState({
+          isLoggin: true
+        })
+      }
     }
     
-    clickHandle = () => {
-        return (
-            <Redirect to='/' />
-        )
+    logOut = () => {
+       window.localStorage.setItem('token','');
+       this.setState({
+         isLoggin: false
+       })
     }
     render() {
   const { classes } = this.props;
+      console.log(this.state.isLoggin)
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -40,8 +49,9 @@ class Nav extends Component{
           <Typography variant="h6" color="inherit" className={classes.grow}>
             TodoList
           </Typography> 
-          <NavLink to='/' style={{ textDecoration: 'none' }} ><Button color="white">Signin</Button></NavLink> 
-          <NavLink to="/signup" style={{ textDecoration: 'none' }}><Button  color="white">Signup</Button> </NavLink>
+          <NavLink to='/' style={{ textDecoration: 'none' }} ><Button color="white">{this.state.isLoggin ? '' : 'Signin' }</Button></NavLink> 
+          <NavLink to="/signup" style={{ textDecoration: 'none' }}><Button  color="white">{this.state.isLoggin ? '' : 'Signup' }</Button> </NavLink>
+          <NavLink to="/" style={{ textDecoration: 'none' }}><Button  color="white" onClick= {this.logOut}>{this.state.isLoggin ? 'Logout' : '' }</Button> </NavLink>
         </Toolbar>
       </AppBar>
     </div>

@@ -9,6 +9,8 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {Redirect} from 'react-router-dom';
+import axios from 'axios';
 
 
 const styles = theme => ({
@@ -45,10 +47,43 @@ const styles = theme => ({
 
 
 class Singin extends Component {
+    state = {
+      userName:'',
+      password: '',
+    }
+
+
+  
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]:e.target.value
+    })
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('satte',this.state)
+    const {userName, password} = this.state;
+    if(userName === '' || password === '') {
+      return alert("Please write your password or username")
+    }
+
+    axios.post('http://localhost:4000/auth/signin', this.state)
+    .then(result => {
+      console.log(result)
+      let token = result.data.token
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('userName',result.data.userName)
+      this.setState({
+        isLoggin:true
+      })
+    })
+    
+  }
  
   render(){
     const { classes } = this.props;
-    return (
+    const SigninForm = (
       <div>
         <main className={classes.main}>
           <CssBaseline />
@@ -61,12 +96,12 @@ class Singin extends Component {
             </Typography>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange} />
+                <InputLabel>Username</InputLabel>
+                <Input  name="userName"  autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>
-                <Input name="password" type="password" id="password" autoComplete="current-password" onChange={this.handleChange}/>
+                <Input name="password" type="password"   onChange={this.handleChange}/>
               </FormControl>
               <Button
                 fullWidth
@@ -82,6 +117,16 @@ class Singin extends Component {
             
           </Paper>
         </main>
+      </div>
+    )
+    if(window.localStorage.getItem('token') !== '') {
+      return (
+        <Redirect to="/dashboard" />
+      )
+    }
+    return (
+      <div>
+      {SigninForm}
       </div>
     )
     };
