@@ -47,7 +47,7 @@ router.post('/updateTodo', (req, res) => {
 
 //delete specific Todo 
 
-route.post('/delete', (req, res) => {
+router.post('/delete', (req, res) => {
     Todos.findByIdAndDelete({_id: req.body.id}).then(result => {
         res.send('Deleted');
     })
@@ -58,7 +58,7 @@ route.post('/delete', (req, res) => {
 
 //get completed Todo from the database
 
-route.get('/completed', (req, res) => {
+router.get('/completed', (req, res) => {
     Todos.findById({_id: req.body.id}).then(result => {
         result.completed = true
         result.save()

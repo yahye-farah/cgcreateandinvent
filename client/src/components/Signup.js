@@ -9,6 +9,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import axios from 'axios';
 
 
 const styles = theme => ({
@@ -45,7 +46,36 @@ const styles = theme => ({
 
 
 class Singin extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      firstName:'',
+      lastName: '',
+      userName: '',
+      password: '',
+    }
+  }
  
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]:e.target.value
+    })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const {firstName,lastName,userName,password} = this.state
+    if(firstName === "" || lastName === "" || userName === "" || password === "") {
+      alert("Please fill all the forms")
+    }else {
+      axios.post('http://localhost:4000/auth/signup ',this.state)
+      .then(result => {
+        console.log('result', result)
+      })
+    }
+    
+  }
+
   render(){
     const { classes } = this.props;
     return (
@@ -61,16 +91,16 @@ class Singin extends Component {
             </Typography>
             <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Firstname</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange} />
+                <InputLabel >Firstname</InputLabel>
+                <Input  name="firstName"  autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Lastname</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange} />
+                <InputLabel >Lastname</InputLabel>
+                <Input  name="lastName" autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange} />
+                <InputLabel >Username</InputLabel>
+                <Input name="userName" autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>

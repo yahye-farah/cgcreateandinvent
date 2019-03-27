@@ -7,21 +7,19 @@ const bcrypt = require('bcrypt');
 
 //signup fro new users
 router.post('/signup', (req, res) => {
-
     User.find({userName: req.body.userName}).then(user => {
-        if(user){
-            res.send("This userName is taken please choose another one");
+        if(user.length !== 0){
+           return res.send("This userName is taken please choose another one");
         }
-
+        console.log('check')
         bcrypt.hash(req.body.password, 10).then(hash => {
             const user = new User({
                 firstName: req.body.firstName,
-                LastName: req.body.LastName,
-                UserName: req.body.UserName,
+                lastName: req.body.lastName,
+                userName: req.body.userName,
                 password: hash
             })
             user.save().then(user => {
-                console.log('saved');
                 let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
                 res.send(token);
             })
@@ -32,8 +30,8 @@ router.post('/signup', (req, res) => {
     })   
 })
 
-// signin users 
 
+// signin users 
 router.post('/signin', (req, res) => {
     User.find({userName: req.body.userName})
     .then(user => {
