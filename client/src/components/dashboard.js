@@ -4,9 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Todo from './Todo';
+import Todos from './Todos';
 import CreateTodo from './createTodo'
 import { Redirect, NavLink } from 'react-router-dom'
+import axios from 'axios';
 
 const styles = {
     root: {
@@ -22,9 +23,14 @@ class Dashboard extends Component {
     };
 
     componentDidMount() {
-        
+        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`)
+        .then(result => {
+            console.log(result);
+            this.setState({
+                todos: result.data
+            })
+        })
     }
-
     handleClose = () => {
         this.setState({
             isOpen: false
@@ -65,7 +71,7 @@ class Dashboard extends Component {
         return (
             <div>
                 {Menu}
-                <Todo />
+                <Todos todos={this.state.todos}/>
             </div>
         )
         }

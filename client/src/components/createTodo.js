@@ -40,9 +40,10 @@ const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
-  },//
+  },
   submit: {
     marginTop: theme.spacing.unit * 1,
+    marginRight: theme.spacing.unit * 4
   },
   inputfield : {
     //width: 300,
@@ -56,11 +57,19 @@ class Singin extends Component {
 
   state = {
     title: '',
-    description: ''
+    description: '',
+    redirectToDashboard: false,
   }
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
+    })
+  }
+
+  handleBack = (e) => {
+    e.preventDefault();
+    this.setState({
+      redirectToDashboard: true
     })
   }
 
@@ -71,9 +80,15 @@ class Singin extends Component {
       description: this.state.description,
       userId: window.localStorage.getItem('userName')
     }
+    if(todo.title === '' || todo.description ==='') {
+      return alert("Please enter title and description")
+    }
     axios.post('http://localhost:4000/todo/create', todo)
     .then(result => {
       console.log('saved')
+      this.setState({
+        redirectToDashboard: true
+      })
     })
 
   }
@@ -98,7 +113,16 @@ class Singin extends Component {
                 <Input name="description" type="text"  className={classes.inputfield}  onChange={this.handleChange}/>
               </FormControl>
               <Button
-                fullWidth
+                //fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.handleBack}
+              >
+                Back
+              </Button>
+              <Button
+                //fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -113,11 +137,16 @@ class Singin extends Component {
         </main>
       </div>
     )
-    if(window.localStorage.getItem('token') !== '') {
+    if(window.localStorage.getItem('token') !== '' && this.state.redirectToDashboard ===false) {
       return (
         <div>
           {CreateForm}
         </div>
+      )
+    }
+    if(this.state.redirectToDashboard) {
+      return (
+        <Redirect to="/" />
       )
     }
     return (

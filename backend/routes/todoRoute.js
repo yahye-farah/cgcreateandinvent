@@ -4,7 +4,6 @@ const Todos = require('../model/Todo');
 
 //create Todo
 router.post('/create', (req, res) => {
-    console.log(';;;',req.body)
     const todo = new Todos({
         title: req.body.title,
         description: req.body.description,
@@ -21,9 +20,10 @@ router.post('/create', (req, res) => {
 
 //get all active Todos from the database
 
-router.get('/activeTodo', (req, res) => {
-    Todos.find({userId: userId, completed: false}).then(result => {
-
+router.get('/active/:user', (req, res) => {
+    console.log(req.params.user)
+    Todos.find({userId: req.params.user, completed: false}).then(result => {
+        res.send(result)
     })
     .catch(error => {
         console.log(error);
