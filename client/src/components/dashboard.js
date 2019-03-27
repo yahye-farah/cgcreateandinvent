@@ -19,18 +19,53 @@ class Dashboard extends Component {
     state = {
         value: 0,
         isOpen: false,
-        todos: []
+        todos: [],
+        completed: []
     };
 
     componentDidMount() {
         axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`)
         .then(result => {
-            console.log(result);
+            console.log('active',result.data);
             this.setState({
                 todos: result.data
             })
         })
+
+        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`)
+        .then(result => {
+            console.log('completed',result.data);
+            this.setState({
+                completed: result.data
+            })
+        })
     }
+
+    filterOutDeletedOne = (id,active) => {
+        console.log('iiii',id)
+        if(active === 'active') {
+            let filteredTodos = this.state.todos.filter(todo => {
+                if(todo._id !== id){
+                    return todo;
+                }
+            })
+            this.setState({
+                todos: filteredTodos
+            })
+        }else {
+            let filteredTodos = this.state.completed.filter(todo => {
+                if(todo._id !== id){
+                    return todo;
+                }
+            })
+            this.setState({
+                completed: filteredTodos
+            })
+        }
+
+    }
+
+
     handleClose = () => {
         this.setState({
             isOpen: false
@@ -62,16 +97,29 @@ class Dashboard extends Component {
                 <Tab label="Create Todo" />
             </Tabs>
         </Paper>)
+
         if(this.state.value === 2) {
             return (
                     <Redirect to="/create" />
             )
         }
-        if(window.localStorage.getItem('token') !== '') {
+        if(this.state.value === 1) {
+            return (
+                <div>
+                {Menu}
+                <Todos todos={this.state.completed}
+                 filterOutDeletedOne= {this.filterOutDeletedOne}
+                />
+            </div>
+            )
+        }
+        if(window.localStorage.getItem('token') !== '' && this.state.value === 0) {
         return (
             <div>
                 {Menu}
-                <Todos todos={this.state.todos}/>
+                <Todos todos={this.state.todos}
+                filterOutDeletedOne= {this.filterOutDeletedOne}
+                />
             </div>
         )
         }

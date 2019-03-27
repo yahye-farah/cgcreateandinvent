@@ -20,11 +20,11 @@ const styles = {
   },
 };
 
-class MediaCard extends Component {
+class CompletedTodos extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      checkedB: false,
+      checkedA: true,
     }
   }
 
@@ -35,15 +35,7 @@ class MediaCard extends Component {
     })
   }
   handleChange = (name, id) => event => {
-    this.setState({ [name]: event.target.checked }, () => {
-      if(this.state.checkedB === true) {
-      this.props.filterOutDeletedOne(id, 'active')
-      axios.post(`http://localhost:4000/todo/completed/${id}`).then(result => {
-        console.log(result);
-      })
-      }
-    })
-
+    //this.setState({ [name]: event.target.checked });
   };
 
   render() {
@@ -64,9 +56,9 @@ class MediaCard extends Component {
       <FormControlLabel
           control={
             <Checkbox
-              checked={this.state.checkedB}
-              onChange={this.handleChange('checkedB', todo._id)}
-              value="checkedB"
+              checked={this.state.checkedA}
+              onChange={this.handleChange('checkedA', todo._id)}
+              value="checkedA"
             />
           }
           label="Completed"
@@ -79,7 +71,7 @@ class MediaCard extends Component {
         </Button>
         <Button size="small" color="primary" onClick = {() => {
           this.deleteTodo(todo._id)
-          filterOutDeletedOne(todo._id, 'active')
+          filterOutDeletedOne(todo._id)
         }}>
           Delete
         </Button>
@@ -89,8 +81,8 @@ class MediaCard extends Component {
   }
 }
 
-MediaCard.propTypes = {
+CompletedTodos.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MediaCard);
+export default withStyles(styles)(CompletedTodos);

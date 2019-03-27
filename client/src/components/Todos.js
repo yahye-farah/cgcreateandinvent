@@ -1,39 +1,9 @@
 import React, { Component } from 'react';
 import Todo from './Todo';
-
-// class Todos extends Component {
-//     constructor(props){
-//         super(props);
-//     }
-
-//     render() {
-//         console.log('',this.props.todos)
-//         if(this.props.todos.length > 0) {
-//             return (
-//                 <div>
-//                 {this.props.todos.map(todo => (
-//                     <Todo 
-//                     todo = {todo}
-//                     />
-//                   ))}
-//                   </div>
-//             )
-//         }else {
-//             return (
-//             <h3>Loading.....</h3>
-//             )
-//         }
-
-//     }
-// }
-
-//export default Todos;
-
-//import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import CompletedTodos from './completedTodos'
 
 const styles = theme => ({
     root: {
@@ -51,18 +21,37 @@ class FullWidthGrid extends Component {
         super(props)
     }
     render() {
-        const { classes } = this.props;
+        const { classes, filterOutDeletedOne } = this.props;
         const Todos = (
             <div className={classes.root}>
                 <Grid container spacing={24}>
-                    {this.props.todos.map(todo => (
-                        <Grid item xs={6} sm={3}>
+                    {this.props.todos.map(todo => {
+                        console.log('lll',todo.completed)
+                        if(todo.completed === 'false') {
+                            console.log('active', todo)
+                            return (
+                        <Grid item xs={12} sm={3} >
                             <Todo
                                 todo={todo}
+                                filterOutDeletedOne= {filterOutDeletedOne}
                             />
 
                         </Grid>
-                    ))}
+                      )}else {
+                          console.log('compeleted',todo)
+                          return (
+                            <Grid item xs={12} sm={3} >
+                            <CompletedTodos
+                                todo={todo}
+                                filterOutDeletedOne= {filterOutDeletedOne}
+                            />
+
+                        </Grid>
+                          )
+                      }
+                      
+                      
+                      })}
                 </Grid>
             </div>
         )
@@ -74,9 +63,8 @@ class FullWidthGrid extends Component {
             )
         }
         return (
-            <h3>You don't have todo yet</h3>
+            <h3>You don't have any todo yet</h3>
         )
-        //   return ;
     }
 }
 

@@ -30,6 +30,18 @@ router.get('/active/:user', (req, res) => {
     })
 })
 
+//get all completed todos
+
+router.get('/complete/:user', (req, res) => {
+    console.log(req.params.user)
+    Todos.find({userId: req.params.user, completed: true}).then(result => {
+        res.send(result)
+    })
+    .catch(error => {
+        console.log(error);
+    })
+})
+
 //update specific Todo 
 
 router.post('/updateTodo', (req, res) => {
@@ -48,8 +60,8 @@ router.post('/updateTodo', (req, res) => {
 
 //delete specific Todo 
 
-router.post('/delete', (req, res) => {
-    Todos.findByIdAndDelete({_id: req.body.id}).then(result => {
+router.post(`/delete/:id`, (req, res) => {
+    Todos.findByIdAndDelete({_id: req.params.id}).then(result => {
         res.send('Deleted');
     })
     .catch(err => {
@@ -57,16 +69,20 @@ router.post('/delete', (req, res) => {
     })
 })
 
-//get completed Todo from the database
+//complete Todo
 
-router.get('/completed', (req, res) => {
-    Todos.findById({_id: req.body.id}).then(result => {
+router.post('/completed/:id', (req, res) => {
+    console.log('pppp')
+    Todos.findById({_id: req.params.id}).then(result => {
         result.completed = true
         result.save()
+        res.send('completed')
     })
     .catch(err => {
         console.log(err);
     })
 })
+
+
 
 module.exports = router
