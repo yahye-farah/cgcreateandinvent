@@ -15,12 +15,10 @@ const styles = {
   card: {
     maxWidth: 345,
   },
-  media: {
-    height: 140,
-  },
+
 };
 
-class MediaCard extends Component {
+class Todo extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,7 +31,6 @@ class MediaCard extends Component {
       headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
     };
     axios.post(`http://localhost:4000/todo/delete`, { id: id }, config).then(result => {
-      console.log(result)
       console.log('deleted successfuly')
     })
   }
@@ -55,7 +52,6 @@ class MediaCard extends Component {
 
   render() {
     const { classes, todo, filterOutDeletedOne } = this.props;
-    console.log('props', this.props)
     return (
       <Card className={classes.card}>
         <CardActionArea>
@@ -103,8 +99,8 @@ class MediaCard extends Component {
   }
 }
 
-MediaCard.propTypes = {
+Todo.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MediaCard);
+export default withStyles(styles)(Todo);

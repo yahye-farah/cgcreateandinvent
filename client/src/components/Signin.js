@@ -62,7 +62,6 @@ class Singin extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('satte', this.state)
     const { userName, password } = this.state;
     if (userName === '' || password === '') {
       return alert("Please write your password or username")
@@ -70,7 +69,6 @@ class Singin extends Component {
 
     axios.post('http://localhost:4000/auth/signin', this.state)
       .then(result => {
-        console.log(result)
         let token = result.data.token
         window.localStorage.setItem('token', token);
         window.localStorage.setItem('userName', result.data.userName)

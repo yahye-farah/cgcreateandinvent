@@ -34,7 +34,6 @@ const styles = theme => ({
   avatar: {
     //margin: theme.spacing.unit,
     //backgroundColor: theme.palette.primary.main,
-    //backgroundImage:require('../image/planning.png')
     backgroundImage: "url(" + Background + ")"
   },
   form: {
@@ -56,7 +55,7 @@ const styles = theme => ({
 });
 
 
-class Singin extends Component {
+class CreateTodo extends Component {
 
   state = {
     title: '',
@@ -78,7 +77,6 @@ class Singin extends Component {
   }
 
   handleSubmit = (e) => {
-    console.log('state', this.state)
     e.preventDefault();
     let todo = {
       title: this.state.title,
@@ -170,4 +168,4 @@ class Singin extends Component {
 }
 
 
-export default withStyles(styles)(Singin);
+export default withStyles(styles)(CreateTodo);

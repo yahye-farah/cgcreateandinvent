@@ -16,7 +16,7 @@ const styles = theme => ({
     },
 });
 
-class FullWidthGrid extends Component {
+class Todos extends Component {
     constructor(props) {
         super(props)
     }
@@ -26,9 +26,7 @@ class FullWidthGrid extends Component {
             <div className={classes.root}>
                 <Grid container spacing={24}>
                     {this.props.todos.map(todo => {
-                        console.log('lll', todo.completed)
                         if (todo.completed === 'false') {
-                            console.log('active', todo)
                             return (
                                 <Grid item xs={12} sm={3} >
                                     <Todo
@@ -40,7 +38,6 @@ class FullWidthGrid extends Component {
                                 </Grid>
                             )
                         } else {
-                            console.log('compeleted', todo)
                             return (
                                 <Grid item xs={12} sm={3} >
                                     <CompletedTodos
@@ -70,8 +67,8 @@ class FullWidthGrid extends Component {
     }
 }
 
-FullWidthGrid.propTypes = {
+Todos.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FullWidthGrid);
+export default withStyles(styles)(Todos);

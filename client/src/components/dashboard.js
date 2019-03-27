@@ -29,7 +29,10 @@ class Dashboard extends Component {
         };
         axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`, config)
             .then(result => {
-                console.log('active', result.data);
+                if (result.data === "authfailed") {
+                    return window.localStorage.setItem('token', '')
+                    window.location.reload()
+                }
                 this.setState({
                     todos: result.data
                 })
@@ -52,7 +55,6 @@ class Dashboard extends Component {
         this.state.completed.unshift(todo);
     }
     filterOutDeletedOne = (id, active) => {
-        console.log('iiii', id)
         if (active === 'active') {
             let filteredTodos = this.state.todos.filter(todo => {
                 if (todo._id !== id) {
@@ -83,7 +85,6 @@ class Dashboard extends Component {
     }
 
     handleChange = (event, value) => {
-        console.log('value', value)
         this.setState({ value });
     };
     render() {
