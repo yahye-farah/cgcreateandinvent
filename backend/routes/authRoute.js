@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../model/User');
 const jwt = require('jsonwebtoken');
 const keys = require('../../keys');
+const bcrypt = require('bcrypt');
 
 //signup fro new users
 router.post('/newUser', (req, res) => {
@@ -12,20 +13,21 @@ router.post('/newUser', (req, res) => {
             res.send("This userName is taken please choose another one");
         }
 
-        const user = new User({
-            firstName: req.body.firstName,
-            LastName: req.body.LastName,
-            UserName: req.body.UserName,
-            password: req.body.password
-        })
-        user.save().then(user => {
-            console.log('saved');
-            //send token here
-            let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
-            res.send(token);
-        })
-        .catch(err => {
-            console.log(err);
+        bcrypt.hash(req.body.password, 10).then(hash => {
+            const user = new User({
+                firstName: req.body.firstName,
+                LastName: req.body.LastName,
+                UserName: req.body.UserName,
+                password: hash
+            })
+            user.save().then(user => {
+                console.log('saved');
+                let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
+                res.send(token);
+            })
+            .catch(err => {
+                console.log(err);
+            })
         })
     })   
 })
@@ -39,10 +41,15 @@ router.post('/login', (req, res) => {
             res.send("Your username is wrong please try again")
         }
         //check the password
-        //*****************
-        let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
-            res.send(token);
+        return bcrypt.compare(req.body.password, user.password)
+    })
+    .then(result => {
+        if(!result) {
+            res.send("Your Password is Wrong")
+        }
 
+        let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
+        res.send(token);
     })
 })
 
