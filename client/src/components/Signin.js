@@ -47,13 +47,13 @@ const styles = theme => ({
 
 
 class Singin extends Component {
-    state = {
+  constructor(props) {
+    super(props)
+    this.state = {
       userName:'',
       password: '',
     }
-
-
-  
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -74,9 +74,7 @@ class Singin extends Component {
       let token = result.data.token
       window.localStorage.setItem('token', token);
       window.localStorage.setItem('userName',result.data.userName)
-      this.setState({
-        isLoggin:true
-      })
+      this.props.navbar()
     })
     
   }

@@ -21,27 +21,15 @@ const styles = {
 };
 
 class Nav extends Component{
-    state = {
-        isLoggin: false,
-        
-    }
-    componentDidMount() {
-      if(window.localStorage.getItem('token') !== '') {
-        this.setState({
-          isLoggin: true
-        })
-      }
-    }
-    
+  constructor(props) {
+    super(props)
+  }
+   
     logOut = () => {
-       window.localStorage.setItem('token','');
-       this.setState({
-         isLoggin: false
-       })
+     this.props.LogOut()
     }
     render() {
-  const { classes } = this.props;
-      console.log(this.state.isLoggin)
+  const { classes,isLoggin } = this.props;
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -49,9 +37,9 @@ class Nav extends Component{
           <Typography variant="h6" color="inherit" className={classes.grow}>
             TodoList
           </Typography> 
-          <NavLink to='/' style={{ textDecoration: 'none' }} ><Button color="white">{this.state.isLoggin ? '' : 'Signin' }</Button></NavLink> 
-          <NavLink to="/signup" style={{ textDecoration: 'none' }}><Button  color="white">{this.state.isLoggin ? '' : 'Signup' }</Button> </NavLink>
-          <NavLink to="/" style={{ textDecoration: 'none' }}><Button  color="white" onClick= {this.logOut}>{this.state.isLoggin ? 'Logout' : '' }</Button> </NavLink>
+          <NavLink to='/' style={{ textDecoration: 'none' }} ><Button color="white">{isLoggin ? '' : 'Signin' }</Button></NavLink> 
+          <NavLink to="/signup" style={{ textDecoration: 'none' }}><Button  color="white">{isLoggin ? '' : 'Signup' }</Button> </NavLink>
+          <NavLink to="/" style={{ textDecoration: 'none' }}><Button  color="white" onClick= {this.logOut}>{isLoggin ? 'Logout' : '' }</Button> </NavLink>
         </Toolbar>
       </AppBar>
     </div>

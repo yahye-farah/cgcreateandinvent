@@ -54,7 +54,6 @@ class Singin extends Component {
       lastName: '',
       userName: '',
       password: '',
-      isLoggin: false
     }
   }
  
@@ -75,9 +74,7 @@ class Singin extends Component {
         let token = result.data.token
         window.localStorage.setItem('token', token);
         window.localStorage.setItem('userName',result.data.userName)
-        this.setState({
-          isLoggin:true
-        })
+        this.props.navbar()
       })
     }
     
@@ -85,7 +82,7 @@ class Singin extends Component {
 
   render(){
     let token = window.localStorage.getItem('token')
-    const { classes } = this.props;
+    const { classes, isLoggin } = this.props;
     const SignupForm = (
       <div>
       <main className={classes.main}>
@@ -136,7 +133,7 @@ class Singin extends Component {
     )
    }
 
-   if(this.state.isLoggin === true) {
+   if(isLoggin === true) {
     return (
       <Redirect to="/dashboard" />
     )
