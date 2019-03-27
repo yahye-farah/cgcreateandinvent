@@ -20,7 +20,11 @@ db.on('error', () => {
 })
 
 
-const todoRoute = require('./backend/routes/todoRoute')
+const todoRoute = require('./backend/routes/todoRoute');
+const authRoute = require('./backend/routes/authRoute');
+
+//app.use('/todo', todoRoute);
+app.use('/auth', authRoute);
 
 
 app.listen(port, () => {

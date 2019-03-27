@@ -6,7 +6,7 @@ const keys = require('../../keys');
 const bcrypt = require('bcrypt');
 
 //signup fro new users
-router.post('/newUser', (req, res) => {
+router.post('/signup', (req, res) => {
 
     User.find({userName: req.body.userName}).then(user => {
         if(user){
@@ -32,9 +32,9 @@ router.post('/newUser', (req, res) => {
     })   
 })
 
-// login users 
+// signin users 
 
-router.post('/login', (req, res) => {
+router.post('/signin', (req, res) => {
     User.find({userName: req.body.userName})
     .then(user => {
         if(!user) {
