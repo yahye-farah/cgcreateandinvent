@@ -21,8 +21,8 @@ router.post('/newUser', (req, res) => {
         user.save().then(user => {
             console.log('saved');
             //send token here
-            const token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
-            res.send('saved')
+            let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
+            res.send(token);
         })
         .catch(err => {
             console.log(err);
@@ -39,6 +39,9 @@ router.post('/login', (req, res) => {
             res.send("Your username is wrong please try again")
         }
         //check the password
+        //*****************
+        let token = jwt.sign({userName: user.userName}, keys.secret, {expiresIn: '1h'})
+            res.send(token);
 
     })
 })
