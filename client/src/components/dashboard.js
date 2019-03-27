@@ -24,47 +24,47 @@ class Dashboard extends Component {
     };
 
     componentDidMount() {
-          const config = {
-      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
-  };
-        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`,config)
-        .then(result => {
-            console.log('active',result.data);
-            this.setState({
-                todos: result.data
+        const config = {
+            headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
+        };
+        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`, config)
+            .then(result => {
+                console.log('active', result.data);
+                this.setState({
+                    todos: result.data
+                })
             })
-        })
 
-        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`,config)
-        .then(result => {
-            console.log('completed',result.data);
-            if(result.data === "authfailed") {
-              return   window.localStorage.setItem('token','')
-            }
-            this.setState({
-                completed: result.data
+        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`, config)
+            .then(result => {
+                if (result.data === "authfailed") {
+                    return window.localStorage.setItem('token', '')
+                    window.location.reload()
+                }
+                this.setState({
+                    completed: result.data
+                })
             })
-        })
     }
 
     filterOutCompletedOne = (todo) => {
-        todo.completed= true;
+        todo.completed = true;
         this.state.completed.unshift(todo);
     }
-    filterOutDeletedOne = (id,active) => {
-        console.log('iiii',id)
-        if(active === 'active') {
+    filterOutDeletedOne = (id, active) => {
+        console.log('iiii', id)
+        if (active === 'active') {
             let filteredTodos = this.state.todos.filter(todo => {
-                if(todo._id !== id){
+                if (todo._id !== id) {
                     return todo;
                 }
             })
             this.setState({
                 todos: filteredTodos
             })
-        }else {
+        } else {
             let filteredTodos = this.state.completed.filter(todo => {
-                if(todo._id !== id){
+                if (todo._id !== id) {
                     return todo;
                 }
             })
@@ -88,7 +88,7 @@ class Dashboard extends Component {
     };
     render() {
         const { classes } = this.props
-        const Menu = (   <Paper className={classes.root}>
+        const Menu = (<Paper className={classes.root}>
             <Tabs
                 value={this.state.value}
                 onChange={this.handleChange}
@@ -102,31 +102,31 @@ class Dashboard extends Component {
             </Tabs>
         </Paper>)
 
-        if(this.state.value === 2) {
+        if (this.state.value === 2) {
             return (
-                    <Redirect to="/create" />
+                <Redirect to="/create" />
             )
         }
-        if(this.state.value === 1) {
+        if (this.state.value === 1) {
             return (
                 <div>
-                {Menu}
-                <Todos todos={this.state.completed}
-                 filterOutDeletedOne= {this.filterOutDeletedOne}
-                />
-            </div>
+                    {Menu}
+                    <Todos todos={this.state.completed}
+                        filterOutDeletedOne={this.filterOutDeletedOne}
+                    />
+                </div>
             )
         }
-        if(window.localStorage.getItem('token') !== '' && this.state.value === 0) {
-        return (
-            <div>
-                {Menu}
-                <Todos todos={this.state.todos}
-                filterOutDeletedOne= {this.filterOutDeletedOne}
-                filterOutCompletedOne= {this.filterOutCompletedOne}
-                />
-            </div>
-        )
+        if (window.localStorage.getItem('token') !== '' && this.state.value === 0) {
+            return (
+                <div>
+                    {Menu}
+                    <Todos todos={this.state.todos}
+                        filterOutDeletedOne={this.filterOutDeletedOne}
+                        filterOutCompletedOne={this.filterOutCompletedOne}
+                    />
+                </div>
+            )
         }
         return (
             <Redirect to="/" />

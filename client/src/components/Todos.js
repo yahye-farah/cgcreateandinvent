@@ -21,7 +21,7 @@ class FullWidthGrid extends Component {
         super(props)
     }
     render() {
-        const { classes, filterOutDeletedOne,filterOutCompletedOne } = this.props;
+        const { classes, filterOutDeletedOne, filterOutCompletedOne } = this.props;
         const Todos = (
             <div className={classes.root}>
                 <Grid container spacing={24}>
@@ -34,7 +34,7 @@ class FullWidthGrid extends Component {
                                     <Todo
                                         todo={todo}
                                         filterOutDeletedOne={filterOutDeletedOne}
-                                        filterOutCompletedOne= {filterOutCompletedOne}
+                                        filterOutCompletedOne={filterOutCompletedOne}
                                     />
 
                                 </Grid>

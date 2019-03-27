@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Background from '../image/event-management.jpg';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios'
 
 const styles = theme => ({
@@ -19,7 +19,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 600,
-      height:800,
+      height: 800,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -45,12 +45,12 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 1,
     marginRight: theme.spacing.unit * 2
   },
-  inputfield : {
+  inputfield: {
     //width: 300,
-    height:100
+    height: 100
     // margin: 100,
   },
-  Input : {
+  Input: {
     marginRight: theme.spacing.unit * 2
   }
 });
@@ -78,7 +78,7 @@ class Singin extends Component {
   }
 
   handleSubmit = (e) => {
-    console.log('state',this.state)
+    console.log('state', this.state)
     e.preventDefault();
     let todo = {
       title: this.state.title,
@@ -86,23 +86,27 @@ class Singin extends Component {
       userId: window.localStorage.getItem('userName'),
       dateandtime: this.state.dayandtime
     }
-    if(todo.title === '' || todo.description ==='') {
+    if (todo.title === '' || todo.description === '') {
       return alert("Please enter title and description")
     }
     const config = {
-      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
-  };
+      headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
+    };
     axios.post('http://localhost:4000/todo/create', todo, config)
-    .then(result => {
-      console.log('saved')
-      this.setState({
-        redirectToDashboard: true
+      .then(result => {
+        if (result.data === "authfailed") {
+          return window.localStorage.setItem('token', '')
+          window.location.reload()
+        }
+
+        this.setState({
+          redirectToDashboard: true
+        })
       })
-    })
 
   }
- 
-  render(){
+
+  render() {
     const { classes } = this.props;
     const CreateForm = (
       <div className={classes.avatar}>
@@ -115,13 +119,13 @@ class Singin extends Component {
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel >Title</InputLabel>
-                <Input  name="title"  autoFocus onChange={this.handleChange} />
+                <Input name="title" autoFocus onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel color="primary">Description</InputLabel>
-                <Input name="description" type="text"  className={classes.inputfield}  onChange={this.handleChange}/>
+                <Input name="description" type="text" className={classes.inputfield} onChange={this.handleChange} />
               </FormControl>
-              <label>Date and Time</label><input type="datetime-local" name="dayandtime" onChange= {this.handleChange} className={classes.Input}></input>
+              <label>Date and Time</label><input type="datetime-local" name="dayandtime" onChange={this.handleChange} className={classes.Input}></input>
               <Button
                 //fullWidth
                 variant="contained"
@@ -140,21 +144,21 @@ class Singin extends Component {
               >
                 Submit
               </Button>
-              
+
             </form>
-            
+
           </Paper>
         </main>
       </div>
     )
-    if(window.localStorage.getItem('token') !== '' && this.state.redirectToDashboard ===false) {
+    if (window.localStorage.getItem('token') !== '' && this.state.redirectToDashboard === false) {
       return (
         <div>
           {CreateForm}
         </div>
       )
     }
-    if(this.state.redirectToDashboard) {
+    if (this.state.redirectToDashboard) {
       return (
         <Redirect to="/" />
       )
@@ -162,7 +166,7 @@ class Singin extends Component {
     return (
       <Redirect to="/" />
     )
-    };
+  };
 }
 
 

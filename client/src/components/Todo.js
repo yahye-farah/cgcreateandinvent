@@ -30,76 +30,76 @@ class MediaCard extends Component {
 
   deleteTodo = (id) => {
     const config = {
-      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
-  };
-    axios.post(`http://localhost:4000/todo/delete`,{id: id} ,config).then(result => {
+      headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
+    };
+    axios.post(`http://localhost:4000/todo/delete`, { id: id }, config).then(result => {
       console.log(result)
       console.log('deleted successfuly')
     })
   }
   handleChange = (name, id, todo) => event => {
     const config = {
-      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
-  };
+      headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
+    };
     this.setState({ [name]: event.target.checked }, () => {
-      if(this.state.checkedB === true) {
-      this.props.filterOutDeletedOne(id, 'active')
-      this.props.filterOutCompletedOne(todo);
-      axios.get(`http://localhost:4000/todo/completed/${id}`, config).then(result => {
-        console.log(result);
-      })
+      if (this.state.checkedB === true) {
+        this.props.filterOutDeletedOne(id, 'active')
+        this.props.filterOutCompletedOne(todo);
+        axios.get(`http://localhost:4000/todo/completed/${id}`, config).then(result => {
+          console.log(result);
+        })
       }
     })
 
   };
 
   render() {
-  const { classes, todo, filterOutDeletedOne } = this.props;
-  console.log('props',this.props)
-  return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {todo.title}
-          </Typography>
-          <Typography component="p">
-           {todo.description}
-          </Typography>
-          <Typography component="p">
-           {todo.dateandtime ? todo.dateandtime.slice(0,10): ''}
-          </Typography>
-          <Typography component="p">
-          {todo.dateandtime ? todo.dateandtime.slice(11): ''}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-      <FormControlLabel
-          control={
-            <Checkbox
-              checked={this.state.checkedB}
-              onChange={this.handleChange('checkedB', todo._id, todo)}
-              value="checkedB"
-            />
-          }
-          label="Completed"
-        />
-        {/* <Button size="small" color="primary">
+    const { classes, todo, filterOutDeletedOne } = this.props;
+    console.log('props', this.props)
+    return (
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {todo.title}
+            </Typography>
+            <Typography component="p">
+              {todo.description}
+            </Typography>
+            <Typography component="p">
+              {todo.dateandtime ? todo.dateandtime.slice(0, 10) : ''}
+            </Typography>
+            <Typography component="p">
+              {todo.dateandtime ? todo.dateandtime.slice(11) : ''}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.checkedB}
+                onChange={this.handleChange('checkedB', todo._id, todo)}
+                value="checkedB"
+              />
+            }
+            label="Completed"
+          />
+          {/* <Button size="small" color="primary">
           Completed
         </Button> */}
-        <Button size="small" color="primary">
-          Update
+          <Button size="small" color="primary">
+            Update
         </Button>
-        <Button size="small" color="primary" onClick = {() => {
-          this.deleteTodo(todo._id)
-          filterOutDeletedOne(todo._id, 'active')
-        }}>
-          Delete
+          <Button size="small" color="primary" onClick={() => {
+            this.deleteTodo(todo._id)
+            filterOutDeletedOne(todo._id, 'active')
+          }}>
+            Delete
         </Button>
-      </CardActions>
-    </Card>
-  );
+        </CardActions>
+      </Card>
+    );
   }
 }
 
