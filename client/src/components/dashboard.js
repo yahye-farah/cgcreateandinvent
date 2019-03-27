@@ -48,6 +48,7 @@ class Dashboard extends Component {
     }
 
     filterOutCompletedOne = (todo) => {
+        todo.completed= true;
         this.state.completed.unshift(todo);
     }
     filterOutDeletedOne = (id,active) => {

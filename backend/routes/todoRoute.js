@@ -17,7 +17,8 @@ router.post('/create', authCheck, (req, res) => {
         const todo = new Todos({
             title: req.body.title,
             description: req.body.description,
-            userId: req.body.userId
+            userId: req.body.userId,
+            dateandtime: req.body.dateandtime
         })
         todo.save().then(result => {
             console.log('successfuly saved');
@@ -92,13 +93,13 @@ router.post('/updateTodo', (req, res) => {
 
 //delete specific Todo 
 
-router.post(`/delete/:id`, authCheck, (req, res) => {
-
+router.post(`/delete`, authCheck, (req, res) => {
+    console.log('kkkk')
     jwt.verify(req.token, keys.secret , (err, decoded) => {
         if(!decoded) {
             return res.send('authfailed')
         }
-        Todos.findByIdAndDelete({ _id: req.params.id }).then(result => {
+        Todos.findByIdAndDelete({ _id: req.body.id }).then(result => {
             res.send('Deleted');
         })
             .catch(err => {

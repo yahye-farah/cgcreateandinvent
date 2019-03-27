@@ -12,71 +12,74 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 const styles = {
-  card: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
+    card: {
+        maxWidth: 345,
+    },
+    media: {
+        height: 140,
+    },
 };
 
 class CompletedTodos extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      checkedA: true,
+    constructor(props) {
+        super(props)
+        this.state = {
+            checkedA: true,
+        }
     }
-  }
 
-  deleteTodo = (id) => {
-    axios.post(`http://localhost:4000/todo/delete/${id}`).then(result => {
-      console.log(result)
-      console.log('deleted successfuly')
-    })
-  }
-  handleChange = (name, id) => event => {
-    //this.setState({ [name]: event.target.checked });
-  };
+    deleteTodo = (id) => {
+        const config = {
+            headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
+        };
+        axios.post(`http://localhost:4000/todo/delete`,{id: id}, config).then(result => {
+            console.log(result)
+            console.log('deleted successfuly')
+        })
+    }
+    handleChange = (name, id) => event => {
+        //this.setState({ [name]: event.target.checked });
+    };
 
-  render() {
-  const { classes, todo, filterOutDeletedOne } = this.props;
-  return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {todo.title}
-          </Typography>
-          <Typography component="p">
-           {todo.description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-      <FormControlLabel
-          control={
-            <Checkbox
-              checked={this.state.checkedA}
-              onChange={this.handleChange('checkedA', todo._id)}
-              value="checkedA"
-            />
-          }
-          label="Completed"
-        />
-        <Button size="small" color="primary" onClick = {() => {
-          this.deleteTodo(todo._id)
-          filterOutDeletedOne(todo._id)
-        }}>
-          Delete
+    render() {
+        const { classes, todo, filterOutDeletedOne } = this.props;
+        return (
+            <Card className={classes.card}>
+                <CardActionArea>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {todo.title}
+                        </Typography>
+                        <Typography component="p">
+                            {todo.description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={this.state.checkedA}
+                                onChange={this.handleChange('checkedA', todo._id)}
+                                value="checkedA"
+                            />
+                        }
+                        label="Completed"
+                    />
+                    <Button size="small" color="primary" onClick={() => {
+                        this.deleteTodo(todo._id)
+                        filterOutDeletedOne(todo._id)
+                    }}>
+                        Delete
         </Button>
-      </CardActions>
-    </Card>
-  );
-  }
+                </CardActions>
+            </Card>
+        );
+    }
 }
 
 CompletedTodos.propTypes = {
-  classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(CompletedTodos);

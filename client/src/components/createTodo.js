@@ -43,12 +43,15 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 1,
-    marginRight: theme.spacing.unit * 4
+    marginRight: theme.spacing.unit * 2
   },
   inputfield : {
     //width: 300,
     height:100
     // margin: 100,
+  },
+  Input : {
+    marginRight: theme.spacing.unit * 2
   }
 });
 
@@ -59,6 +62,7 @@ class Singin extends Component {
     title: '',
     description: '',
     redirectToDashboard: false,
+    dayandtime: ''
   }
   handleChange = (e) => {
     this.setState({
@@ -74,11 +78,13 @@ class Singin extends Component {
   }
 
   handleSubmit = (e) => {
+    console.log('state',this.state)
     e.preventDefault();
     let todo = {
       title: this.state.title,
       description: this.state.description,
-      userId: window.localStorage.getItem('userName')
+      userId: window.localStorage.getItem('userName'),
+      dateandtime: this.state.dayandtime
     }
     if(todo.title === '' || todo.description ==='') {
       return alert("Please enter title and description")
@@ -115,6 +121,7 @@ class Singin extends Component {
                 <InputLabel color="primary">Description</InputLabel>
                 <Input name="description" type="text"  className={classes.inputfield}  onChange={this.handleChange}/>
               </FormControl>
+              <label>Date and Time</label><input type="datetime-local" name="dayandtime" onChange= {this.handleChange} className={classes.Input}></input>
               <Button
                 //fullWidth
                 variant="contained"

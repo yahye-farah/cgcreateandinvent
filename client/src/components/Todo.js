@@ -32,7 +32,7 @@ class MediaCard extends Component {
     const config = {
       headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
   };
-    axios.post(`http://localhost:4000/todo/delete/${id}`, config).then(result => {
+    axios.post(`http://localhost:4000/todo/delete`,{id: id} ,config).then(result => {
       console.log(result)
       console.log('deleted successfuly')
     })
@@ -65,6 +65,12 @@ class MediaCard extends Component {
           </Typography>
           <Typography component="p">
            {todo.description}
+          </Typography>
+          <Typography component="p">
+           {todo.dateandtime ? todo.dateandtime.slice(0,10): ''}
+          </Typography>
+          <Typography component="p">
+          {todo.dateandtime ? todo.dateandtime.slice(11): ''}
           </Typography>
         </CardContent>
       </CardActionArea>
