@@ -69,7 +69,7 @@ class Singin extends Component {
     if(firstName === "" || lastName === "" || userName === "" || password === "") {
       alert("Please fill all the forms")
     }else {
-      axios.post('http://localhost:4000/auth/signup ',this.state)
+      axios.post('/auth/signup ',this.state)
       .then(result => {
         let token = result.data.token
         window.localStorage.setItem('token', token);

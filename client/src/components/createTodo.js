@@ -90,7 +90,7 @@ class CreateTodo extends Component {
     const config = {
       headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
     };
-    axios.post('http://localhost:4000/todo/create', todo, config)
+    axios.post('/todo/create', todo, config)
       .then(result => {
         if (result.data === "authfailed") {
           return window.localStorage.setItem('token', '')

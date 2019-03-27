@@ -32,7 +32,7 @@ class CompletedTodos extends Component {
         const config = {
             headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
         };
-        axios.post(`http://localhost:4000/todo/delete`,{id: id}, config).then(result => {
+        axios.post(`/todo/delete`,{id: id}, config).then(result => {
             console.log('deleted successfuly')
         })
     }

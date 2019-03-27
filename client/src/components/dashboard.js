@@ -27,7 +27,7 @@ class Dashboard extends Component {
         const config = {
             headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
         };
-        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`, config)
+        axios.get(`/todo/active/${window.localStorage.userName}`, config)
             .then(result => {
                 if (result.data === "authfailed") {
                     return window.localStorage.setItem('token', '')
@@ -38,7 +38,7 @@ class Dashboard extends Component {
                 })
             })
 
-        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`, config)
+        axios.get(`/todo/complete/${window.localStorage.userName}`, config)
             .then(result => {
                 if (result.data === "authfailed") {
                     return window.localStorage.setItem('token', '')

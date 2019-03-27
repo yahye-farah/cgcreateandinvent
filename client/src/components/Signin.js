@@ -67,7 +67,7 @@ class Singin extends Component {
       return alert("Please write your password or username")
     }
 
-    axios.post('http://localhost:4000/auth/signin', this.state)
+    axios.post('/auth/signin', this.state)
       .then(result => {
         let token = result.data.token
         window.localStorage.setItem('token', token);

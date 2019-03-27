@@ -30,7 +30,7 @@ class Todo extends Component {
     const config = {
       headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
     };
-    axios.post(`http://localhost:4000/todo/delete`, { id: id }, config).then(result => {
+    axios.post(`/todo/delete`, { id: id }, config).then(result => {
       console.log('deleted successfuly')
     })
   }
@@ -42,7 +42,7 @@ class Todo extends Component {
       if (this.state.checkedB === true) {
         this.props.filterOutDeletedOne(id, 'active')
         this.props.filterOutCompletedOne(todo);
-        axios.get(`http://localhost:4000/todo/completed/${id}`, config).then(result => {
+        axios.get(`/todo/completed/${id}`, config).then(result => {
           console.log(result);
         })
       }
