@@ -24,7 +24,10 @@ class Dashboard extends Component {
     };
 
     componentDidMount() {
-        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`)
+          const config = {
+      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
+  };
+        axios.get(`http://localhost:4000/todo/active/${window.localStorage.userName}`,config)
         .then(result => {
             console.log('active',result.data);
             this.setState({
@@ -32,15 +35,21 @@ class Dashboard extends Component {
             })
         })
 
-        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`)
+        axios.get(`http://localhost:4000/todo/complete/${window.localStorage.userName}`,config)
         .then(result => {
             console.log('completed',result.data);
+            if(result.data === "authfailed") {
+              return   window.localStorage.setItem('token','')
+            }
             this.setState({
                 completed: result.data
             })
         })
     }
 
+    filterOutCompletedOne = (todo) => {
+        this.state.completed.unshift(todo);
+    }
     filterOutDeletedOne = (id,active) => {
         console.log('iiii',id)
         if(active === 'active') {
@@ -75,12 +84,6 @@ class Dashboard extends Component {
     handleChange = (event, value) => {
         console.log('value', value)
         this.setState({ value });
-        if (value === 1) {
-            return (
-                <Redirect to="/create" />  
-            )
-                         
-        }
     };
     render() {
         const { classes } = this.props
@@ -119,6 +122,7 @@ class Dashboard extends Component {
                 {Menu}
                 <Todos todos={this.state.todos}
                 filterOutDeletedOne= {this.filterOutDeletedOne}
+                filterOutCompletedOne= {this.filterOutCompletedOne}
                 />
             </div>
         )

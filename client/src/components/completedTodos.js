@@ -63,12 +63,6 @@ class CompletedTodos extends Component {
           }
           label="Completed"
         />
-        {/* <Button size="small" color="primary">
-          Completed
-        </Button> */}
-        <Button size="small" color="primary">
-          Update
-        </Button>
         <Button size="small" color="primary" onClick = {() => {
           this.deleteTodo(todo._id)
           filterOutDeletedOne(todo._id)

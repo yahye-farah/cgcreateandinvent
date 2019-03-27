@@ -21,41 +21,43 @@ class FullWidthGrid extends Component {
         super(props)
     }
     render() {
-        const { classes, filterOutDeletedOne } = this.props;
+        const { classes, filterOutDeletedOne,filterOutCompletedOne } = this.props;
         const Todos = (
             <div className={classes.root}>
                 <Grid container spacing={24}>
                     {this.props.todos.map(todo => {
-                        console.log('lll',todo.completed)
-                        if(todo.completed === 'false') {
+                        console.log('lll', todo.completed)
+                        if (todo.completed === 'false') {
                             console.log('active', todo)
                             return (
-                        <Grid item xs={12} sm={3} >
-                            <Todo
-                                todo={todo}
-                                filterOutDeletedOne= {filterOutDeletedOne}
-                            />
+                                <Grid item xs={12} sm={3} >
+                                    <Todo
+                                        todo={todo}
+                                        filterOutDeletedOne={filterOutDeletedOne}
+                                        filterOutCompletedOne= {filterOutCompletedOne}
+                                    />
 
-                        </Grid>
-                      )}else {
-                          console.log('compeleted',todo)
-                          return (
-                            <Grid item xs={12} sm={3} >
-                            <CompletedTodos
-                                todo={todo}
-                                filterOutDeletedOne= {filterOutDeletedOne}
-                            />
+                                </Grid>
+                            )
+                        } else {
+                            console.log('compeleted', todo)
+                            return (
+                                <Grid item xs={12} sm={3} >
+                                    <CompletedTodos
+                                        todo={todo}
+                                        filterOutDeletedOne={filterOutDeletedOne}
+                                    />
 
-                        </Grid>
-                          )
-                      }
-                      
-                      
-                      })}
+                                </Grid>
+                            )
+                        }
+
+
+                    })}
                 </Grid>
             </div>
         )
-        if (this.props.todos.length > 1) {
+        if (this.props.todos.length >= 1) {
             return (
                 <div>
                     {Todos}

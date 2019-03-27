@@ -29,16 +29,23 @@ class MediaCard extends Component {
   }
 
   deleteTodo = (id) => {
-    axios.post(`http://localhost:4000/todo/delete/${id}`).then(result => {
+    const config = {
+      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
+  };
+    axios.post(`http://localhost:4000/todo/delete/${id}`, config).then(result => {
       console.log(result)
       console.log('deleted successfuly')
     })
   }
-  handleChange = (name, id) => event => {
+  handleChange = (name, id, todo) => event => {
+    const config = {
+      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
+  };
     this.setState({ [name]: event.target.checked }, () => {
       if(this.state.checkedB === true) {
       this.props.filterOutDeletedOne(id, 'active')
-      axios.post(`http://localhost:4000/todo/completed/${id}`).then(result => {
+      this.props.filterOutCompletedOne(todo);
+      axios.get(`http://localhost:4000/todo/completed/${id}`, config).then(result => {
         console.log(result);
       })
       }
@@ -48,6 +55,7 @@ class MediaCard extends Component {
 
   render() {
   const { classes, todo, filterOutDeletedOne } = this.props;
+  console.log('props',this.props)
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -65,7 +73,7 @@ class MediaCard extends Component {
           control={
             <Checkbox
               checked={this.state.checkedB}
-              onChange={this.handleChange('checkedB', todo._id)}
+              onChange={this.handleChange('checkedB', todo._id, todo)}
               value="checkedB"
             />
           }

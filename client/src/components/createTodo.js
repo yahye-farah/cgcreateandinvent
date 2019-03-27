@@ -83,7 +83,10 @@ class Singin extends Component {
     if(todo.title === '' || todo.description ==='') {
       return alert("Please enter title and description")
     }
-    axios.post('http://localhost:4000/todo/create', todo)
+    const config = {
+      headers: {'Authorization': "bearer " + window.localStorage.getItem('token')}
+  };
+    axios.post('http://localhost:4000/todo/create', todo, config)
     .then(result => {
       console.log('saved')
       this.setState({
