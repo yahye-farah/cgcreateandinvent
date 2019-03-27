@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors())
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 //mongodb connection
 mongoose.connect(keys.dbUrl);
