@@ -115,10 +115,11 @@ class Singin extends Component {
         </main>
       </div>
     )
-    if (window.localStorage.getItem('token') !== '') {
+    if (window.localStorage.getItem('token') !== '' || window.localStorage.getItem('token') !== null) {
       return (
         <Redirect to="/dashboard" />
       )
+      window.location.reload()
     }
     return (
       <div>
