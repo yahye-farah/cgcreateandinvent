@@ -78,6 +78,7 @@ class Singin extends Component {
   }
 
   render() {
+    console.log('localsgn', window.localStorage.getItem('token'))
     const { classes } = this.props;
     const SigninForm = (
       <div>
@@ -119,7 +120,6 @@ class Singin extends Component {
       return (
         <Redirect to="/dashboard" />
       )
-      window.location.reload()
     }
     return (
       <div>
