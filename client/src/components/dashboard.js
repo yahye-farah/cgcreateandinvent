@@ -118,7 +118,7 @@ class Dashboard extends Component {
                 </div>
             )
         }
-        if (window.localStorage.getItem('token') !== '' && this.state.value === 0) {
+        if ( window.localStorage.getItem('token') !== null && window.localStorage.getItem('token') !== '' && this.state.value === 0) {
             return (
                 <div>
                     {Menu}
