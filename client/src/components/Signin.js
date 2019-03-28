@@ -116,16 +116,18 @@ class Singin extends Component {
         </main>
       </div>
     )
-    if (window.localStorage.getItem('token') !== '' || window.localStorage.getItem('token') !== null) {
+    if (window.localStorage.getItem('token') === '' || window.localStorage.getItem('token') === null) {
+      return (
+        <div>
+          {SigninForm}
+        </div>
+      )
+    
+    }else {
       return (
         <Redirect to="/dashboard" />
       )
     }
-    return (
-      <div>
-        {SigninForm}
-      </div>
-    )
   };
 }
 
