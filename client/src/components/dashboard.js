@@ -88,7 +88,6 @@ class Dashboard extends Component {
         this.setState({ value });
     };
     render() {
-        console.log('local',window.localStorage.getItem('token'))
         const { classes } = this.props
         const Menu = (<Paper className={classes.root}>
             <Tabs

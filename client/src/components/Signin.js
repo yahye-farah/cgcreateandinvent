@@ -78,7 +78,6 @@ class Singin extends Component {
   }
 
   render() {
-    console.log('localsgn', window.localStorage.getItem('token'))
     const { classes } = this.props;
     const SigninForm = (
       <div>
