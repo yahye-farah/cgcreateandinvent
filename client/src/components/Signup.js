@@ -127,15 +127,24 @@ class Singin extends Component {
       </main>
     </div>
     )
-   if(token ==='' && token === null ) {
+   if(token !=='' && token !== null) {
     return (
-      <div>
-     {SignupForm}
-     </div>
+      <Redirect to="/dashboard" />
+    )
+   }
+
+   if(isLoggin === true) {
+    return (
+      <Redirect to="/dashboard" />
     )
    }else {
-    <Redirect to="/dashboard" />
-   } 
+   return (
+     <div>
+    {SignupForm}
+    </div>
+   )
+   }
+   
   };
 }
 
