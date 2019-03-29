@@ -69,26 +69,20 @@ router.get('/complete/:user', authCheck , (req, res) => {
 
 //update specific Todo 
 
-router.post('/updateTodo', (req, res) => {
+router.post('/update', authCheck, (req, res) => {
 
     jwt.verify(req.token, keys.secret , (err, decoded) => {
         if(!decoded) {
             return res.send('authfailed')
         }
-        Todos.find({ _id: req.body.id }).then(result => {
-            result.title = req.body.title;
-            result.description = req.body.description;
-    
-            result.save().then(result => {
-                res.send('saved');
-            })
+        console.log('req.body',req.body)
+        Todos.findOneAndUpdate({ _id: req.body.id }, req.body).then(todo => {
+           res.send('Updated successfuly')
         })
             .catch(err => {
                 console.log(err);
             })
     })
-    
-
 })
 
 //delete specific Todo 

@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import {Redirect} from 'react-router-dom'
 
 const styles = {
   card: {
@@ -23,9 +24,16 @@ class Todo extends Component {
     super(props)
     this.state = {
       checkedB: false,
+      redirectUpdate: false
     }
   }
 
+  redirectUpdateComponent = () => {
+    console.log('kkkk')
+    this.setState({
+      redirectUpdate: true
+    })
+  }
   deleteTodo = (id) => {
     const config = {
       headers: { 'Authorization': "bearer " + window.localStorage.getItem('token') }
@@ -84,8 +92,12 @@ class Todo extends Component {
           {/* <Button size="small" color="primary">
           Completed
         </Button> */}
-          <Button size="small" color="primary">
-            Update
+          <Button size="small" color="primary" onClick={this.redirectUpdateComponent}>
+            {this.state.redirectUpdate ? <Redirect to={{
+            pathname: '/updateTodo',
+            state: { todo: todo }
+        }}
+/>: 'update'}
         </Button>
           <Button size="small" color="primary" onClick={() => {
             this.deleteTodo(todo._id)

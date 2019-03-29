@@ -6,6 +6,7 @@ import Singin from './components/Signin';
 import Singup from './components/Signup';
 import Dashboard from './components/dashboard'
 import CreateTodo from './components/createTodo'
+import UpdateTodo from '../src/components/updateTodo'
 
 
 class App extends Component {
@@ -52,6 +53,7 @@ class App extends Component {
           />
           <Route path='/dashboard' exact component={Dashboard} />
           <Route path='/create' exact component={CreateTodo} />
+          <Route path='/updateTodo' exact component={UpdateTodo} />
         </BrowserRouter>
       </div>
     );
